@@ -1,0 +1,33 @@
+{
+  "name": "boltserver",
+  "version": "1.0.0",
+  "description": "Server for Bolt",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon -e js,graphql src/index.js"
+  },
+  "author": "roshan",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "blob": "^0.1.0",
+    "dotenv": "^8.2.0",
+    "easy-ftp": "^0.4.1",
+    "exceljs": "^4.1.1",
+    "express-fileupload": "^1.2.0",
+    "file-saver": "^2.0.2",
+    "fs-extra": "^9.0.1",
+    "graphql-yoga": "^1.18.3",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.28.0",
+    "mysql": "^2.18.1",
+    "node-cron": "^2.0.3",
+    "node-xlsx": "^0.15.0",
+    "nodemon": "^2.0.4",
+    "path": "^0.12.7",
+    "twilio": "^3.49.1",
+    "url": "^0.11.0",
+    "xlsx": "^0.16.7"
+  }
+}

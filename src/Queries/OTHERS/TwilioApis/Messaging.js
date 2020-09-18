@@ -12,7 +12,7 @@ const Messaging = (ID) => {
       to: "+918076302567",
       from: process.env.TWILIO_PHONE_NUMBER,
       body:
-        "Hello You're now Registered Customer with Bolt Services \n click here to Sign our terms and agreements \n have a nice day thank you  Click Here to Sign : http://192.168.0.101:3000/document2:id=" +
+        "Hello You're now Registered Customer with Bolt Services \n click here to Sign our terms and agreements \n have a nice day thank you  Click Here to Sign : http://157.230.62.70:3000/document2:id=" +
         ID,
     },
     (err, messagee) => {
