@@ -1,0 +1,133 @@
+type Query {
+  hello: String!
+  Login(email: String!, password: String!, type: String): Token
+  AllUser(teamName: String): [UserObject]
+  GetUserDetail(userid: ID): userObject
+  getAllCountries: [country]
+  UserProfileDetail(user_id: ID): ProfileDetailObject
+  AllTeams(teamName: String): [TeamObject]
+  getCustomerDetails(id: ID): CustomerObject
+}
+
+type CustomerObject {
+  firstName: String
+  lastName: String
+  btn: String
+  email: String
+}
+
+type UserObject {
+  id: ID
+  name: String
+  email: String
+  phonenumber: String
+  createdAt: String
+  teamName: String
+}
+
+type TeamObject {
+  id: ID
+  teamName: String
+  createdAt: String
+  sales: String
+  totalNoMembers: Int
+}
+
+type country {
+  Name: String
+  Code: String
+}
+
+type Token {
+  sxToken: String
+  status: String
+}
+
+type userObject {
+  user_id: ID
+  name: String
+  username: String
+  type: String
+  profilePic: String
+  email: String
+}
+
+type ProfileDetailObject {
+  name: String
+  username: String
+  type: String
+  email: String
+  phonenumber: String
+  country: String
+  state: String
+}
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++Mutations
+type Mutation {
+  SignUp(
+    name: String
+    username: String
+    email: String
+    password: String
+    userType: String
+    subType: String
+  ): String
+
+  EditUserDetails(
+    name: String
+    username: String
+    user_id: ID
+    password: String
+    phonenumber: String
+    country: String
+    state: String
+  ): String
+
+  CustomerDetails(data: CustomerDetailsObject): String
+
+  AgentRegistration(data: AgentRegistrationObject): String
+
+  CreateTeam(teamName: String): String
+}
+
+input CustomerDetailsObject {
+  formType: String
+  repId: String
+  language: String
+  firstName: String
+  lastName: String
+  btNumber: String
+  mobileNumber: String
+  email: String
+  d2dTelephonic: String
+  state: String
+  rateCode: String
+  utility: String
+  plan: String
+  accountNumber: String
+  meterNumber: String
+  houseNumber: String
+  streetPrefix: String
+  streetName: String
+  streetSuffix: String
+  aptSuiteNumber: String
+  serviceCity: String
+  serviceState: String
+  zipcode: String
+  billingHouseNumber: String
+  billingStreetPrefix: String
+  billingStreetName: String
+  billingStreetSuffix: String
+  billingAptSuiteNumber: String
+  billingServiceCity: String
+  billingServiceState: String
+  billingZipcode: String
+}
+
+input AgentRegistrationObject {
+  name: String
+  email: String
+  password: String
+  teams: ID
+  userType: String
+}
