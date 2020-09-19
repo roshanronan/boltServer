@@ -3,7 +3,7 @@ const SQLQueries = require("../../SQLQueries/OTHER/AllUser");
 const Authenticate = require("../../Utils/Authentication");
 
 const AllTeams = async (_, { teamName }, ctx) => {
-  console.log("value of ctx ",ctx)
+  // console.log("value of ctx ",ctx)
    const UserAuth=Authenticate(ctx);
 
   return await new Promise((resolve, reject) => {

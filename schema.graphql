@@ -88,6 +88,8 @@ type Mutation {
   AgentRegistration(data: AgentRegistrationObject): String
 
   CreateTeam(teamName: String): String
+
+  DeleteTeam(teamName: ID): String
 }
 
 input CustomerDetailsObject {

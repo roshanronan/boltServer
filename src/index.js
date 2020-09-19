@@ -68,12 +68,27 @@ const resolvers = {
           "insert into teams (teamName) values (?)",
           [teamName],
           (err, results, fields) => {
-            if (error) {
+            if (err) {
               reject("failed  :: " + err);
             } else {
               resolve("success");
             }
-          }
+          } 
+        );
+      });
+    },
+    DeleteTeam:async (_, { teamName }, ctx) => {
+      return await new Promise((resolve, reject) => {
+        pool.query(
+          "delete from teams where id =?",
+          [teamName],
+          (err, results, fields) => {
+            if (err) {
+              reject("failed  :: " + err);
+            } else {
+              resolve("success");
+            }
+          } 
         );
       });
     },
