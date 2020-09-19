@@ -4,7 +4,7 @@ const Authenticate = require("../../Utils/Authentication");
 
 const AllTeams = async (_, { teamName }, ctx) => {
   // console.log("value of ctx ",ctx)
-   const UserAuth=Authenticate(ctx);
+  //  const UserAuth=Authenticate(ctx);
 
   return await new Promise((resolve, reject) => {
     pool.query("select * from teams", (error, results, fields) => {
@@ -22,16 +22,16 @@ const AllTeams = async (_, { teamName }, ctx) => {
             (err, data, fields) => {
               if (err) {
               } else {
-                console.log("----",data)
-                console.log("-before---",results)
-                results=JSON.parse(JSON.stringify(results[0]))
-                onsole.log("-before---",results)
-                results.map(item=>{
-                  item.totalNoMembers=data[0].totalNoMembers
-                })
-                
+                console.log("----", data);
+                console.log("-before---", results);
+                results = JSON.parse(JSON.stringify(results[0]));
+                console.log("-before---", results);
+                results.map((item) => {
+                  item.totalNoMembers = data[0].totalNoMembers;
+                });
+
                 // results[0].totalNoMembers = data[0].totalNoMembers;
-                console.log("--after--",results)
+                console.log("--after--", results);
                 resolve(results);
               }
             }

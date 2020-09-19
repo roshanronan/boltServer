@@ -18,13 +18,10 @@ const path = require("path");
 const fs = require("fs-extra");
 var jwt = require("jsonwebtoken");
 const { setTimeout } = require("timers");
-const Cron=require("./Cronjob/Cron")
-const getCustomerDetails = require("./Queries/OTHERS/getCustomerDetails")
+const Cron = require("./Cronjob/Cron");
+const getCustomerDetails = require("./Queries/OTHERS/getCustomerDetails");
 // const Calling =require("./Queries/OTHERS/TwilioApis/Calling")
 // Calling()
-
-
-
 
 const docUploadPath = (userId, docFlag) => {
   console.log("---this called----");
@@ -56,7 +53,7 @@ const resolvers = {
     UserProfileDetail: UserProfileDetail,
     getAllCountries: getAllCountries,
     AllTeams: AllTeams,
-    getCustomerDetails:getCustomerDetails,
+    getCustomerDetails: getCustomerDetails,
   },
 
   Mutation: {
@@ -73,11 +70,11 @@ const resolvers = {
             } else {
               resolve("success");
             }
-          } 
+          }
         );
       });
     },
-    DeleteTeam:async (_, { teamName }, ctx) => {
+    DeleteTeam: async (_, { teamName }, ctx) => {
       return await new Promise((resolve, reject) => {
         pool.query(
           "delete from teams where id =?",
@@ -88,7 +85,22 @@ const resolvers = {
             } else {
               resolve("success");
             }
-          } 
+          }
+        );
+      });
+    },
+    DeleteUser: async (_, { name }, ctx) => {
+      return await new Promise((resolve, reject) => {
+        pool.query(
+          "delete from users where name =?",
+          [name],
+          (err, results, fields) => {
+            if (err) {
+              reject("failed  :: " + err);
+            } else {
+              resolve("success");
+            }
+          }
         );
       });
     },
@@ -104,7 +116,7 @@ const server = new GraphQLServer({
     ...req,
   }),
 });
-Cron()
+Cron();
 server.use(fileUpload());
 // server.get("/getProfile", function (req, res) {
 //   res.sendFile(path.join(__dirname + "/index.html"));

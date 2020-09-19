@@ -7,6 +7,7 @@ type Query {
   UserProfileDetail(user_id: ID): ProfileDetailObject
   AllTeams(teamName: String): [TeamObject]
   getCustomerDetails(id: ID): CustomerObject
+  GetAllUserList: [String]
 }
 
 type CustomerObject {
@@ -90,6 +91,7 @@ type Mutation {
   CreateTeam(teamName: String): String
 
   DeleteTeam(teamName: ID): String
+  DeleteUser(name: String): String
 }
 
 input CustomerDetailsObject {
