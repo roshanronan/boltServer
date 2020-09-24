@@ -2,10 +2,23 @@ const { pool } = require("../../connection");
 const Messaging = require("../../Queries/OTHERS/TwilioApis/Messaging");
 const Authenticate = require("./../../Utils/Authentication");
 // const validationChecker = require("../../validationChecker");
+const moveFile = require("move-file");
+const path = require("path");
+
+const currentDir = __dirname;
+let source = path.join(
+  currentDir,
+  "../../assets/userUploads/user_" //+ UserAuth.user_id + "/" + data.filename
+);
+let destination = path.join(
+  currentDir,
+  "../../assets/customers/cid_" // + results.insertId
+);
 
 const CustomerDetails = async (_, { data }, ctx) => {
   console.log("==================data Parsed================", data);
   const UserAuth = Authenticate(ctx);
+
   // return validationChecker(data);
   return await new Promise((resolve, reject) => {
     pool.query(
@@ -48,10 +61,18 @@ const CustomerDetails = async (_, { data }, ctx) => {
         if (error) {
           reject(error.toString());
         } else {
-
           console.log("-----see results -----", results.insertId);
-          Messaging(parseInt(results.insertId))
+          // Messaging(data.mobileNumber, parseInt(results.insertId));
 
+          (async () => {
+            await moveFile(
+              source + UserAuth.user_id + "/" + data.filename,
+              destination + results.insertId+"/"+data.filename
+            );
+            console.log("The file has been moved");
+          })();
+
+          _;
           resolve("success");
         }
       }

@@ -2,18 +2,19 @@ type Query {
   hello: String!
   Login(email: String!, password: String!, type: String): Token
   AllUser(teamName: String): [UserObject]
-  GetUserDetail(userid: ID): userObject
+  GetUserDetail(token: String): userObject
   getAllCountries: [country]
   UserProfileDetail(user_id: ID): ProfileDetailObject
   AllTeams(teamName: String): [TeamObject]
   getCustomerDetails(id: ID): CustomerObject
-  GetAllUserList: [String]
+  getTeamName: String
+  callingCustomer(mobileNumber: String): String
 }
 
 type CustomerObject {
   firstName: String
   lastName: String
-  btn: String
+  mobileNumber: String
   email: String
 }
 
@@ -21,6 +22,7 @@ type UserObject {
   id: ID
   name: String
   email: String
+  type: String
   phonenumber: String
   createdAt: String
   teamName: String
@@ -40,6 +42,7 @@ type country {
 }
 
 type Token {
+  type: String
   sxToken: String
   status: String
 }
@@ -51,6 +54,8 @@ type userObject {
   type: String
   profilePic: String
   email: String
+  stateAccess: String
+  rateCode: String
 }
 
 type ProfileDetailObject {
@@ -126,6 +131,7 @@ input CustomerDetailsObject {
   billingServiceCity: String
   billingServiceState: String
   billingZipcode: String
+  filename:String
 }
 
 input AgentRegistrationObject {
@@ -134,4 +140,6 @@ input AgentRegistrationObject {
   password: String
   teams: ID
   userType: String
+  stateAccess: String
+  rateCode: String
 }

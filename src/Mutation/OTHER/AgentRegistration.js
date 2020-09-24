@@ -2,7 +2,7 @@ const { pool } = require("../../connection");
 const Authenticate = require("./../../Utils/Authentication");
 const bcrypt = require("bcrypt");
 const salt_rounds = parseInt(process.env.SALT_ROUNDS);
-const Messaging=require("./../../Queries/OTHERS/TwilioApis/Messaging")
+const Messaging = require("./../../Queries/OTHERS/TwilioApis/Messaging");
 
 // const validationChecker = require("../../validationChecker");
 
@@ -14,8 +14,16 @@ const AgentRegistration = async (_, { data }, ctx) => {
   // return validationChecker(data);
   return await new Promise((resolve, reject) => {
     pool.query(
-      "insert into users (name,email,password,type,teamId) values(?,?,?,?,?);",
-      [data.name, data.email, _password, data.userType,data.teams],
+      "insert into users (name,email,password,type,teamId,stateAccess,rateCode) values(?,?,?,?,?,?,?);",
+      [
+        data.name,
+        data.email,
+        _password,
+        data.userType,
+        data.teams,
+        data.stateAccess,
+        data.rateCode,
+      ],
       (error, results, fields) => {
         if (error) {
           reject(error.toString());
@@ -28,7 +36,7 @@ const AgentRegistration = async (_, { data }, ctx) => {
           );
           resolve("success");
 
-          Messaging(results.insertId)
+          // Messaging(results.insertId);
         }
       }
     );

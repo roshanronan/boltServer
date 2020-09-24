@@ -1,14 +1,15 @@
 const { pool } = require("./../../connection");
 const SQLQueries = require("./../../SQLQueries/OTHER/GetUserDetail");
-const Authenticate = require("./../../Utils/Authentication");
+const Auth = require("./../../Utils/Auth");
 
-const GetUserDetail = async (_, { userid }, ctx) => {
-  console.log(userid)
+const GetUserDetail = async (_, { token }, ctx) => {
   // console.log("user details on login", UserAuth);
+  const UserAuth=Auth(token)
+  console.log("=======Auth=== is :: ",UserAuth)
   return await new Promise((resolve, reject) => {
     pool.query(
       "select * from users where id= ?",
-      [parseInt(userid)],
+      [parseInt(UserAuth.user_id)],
       (err, results, fields) => {
         console.log("------Data-----",results)
         resolve(results[0]);

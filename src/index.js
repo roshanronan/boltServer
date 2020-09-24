@@ -20,6 +20,10 @@ var jwt = require("jsonwebtoken");
 const { setTimeout } = require("timers");
 const Cron = require("./Cronjob/Cron");
 const getCustomerDetails = require("./Queries/OTHERS/getCustomerDetails");
+const { resolve } = require("path");
+const Authenticate = require("./Utils/Authentication");
+const Calling = require("./Queries/OTHERS/TwilioApis/Calling");
+const Auth = require("./Utils/Auth");
 // const Calling =require("./Queries/OTHERS/TwilioApis/Calling")
 // Calling()
 
@@ -27,8 +31,7 @@ const docUploadPath = (userId, docFlag) => {
   console.log("---this called----");
   let dirUploadPath;
   console.log("default of docuploadpath");
-  dirUploadPath =
-    __dirname + "/assets/userUploads/user_" + userId + "/profilepic/";
+  dirUploadPath = __dirname + "/assets/userUploads/user_" + userId + "/";
 
   return dirUploadPath;
 };
@@ -44,8 +47,19 @@ const docUploadQuery = (userId, docFlag, filePath) => {
 
 const resolvers = {
   Query: {
-    hello: (_, args, context, info) => {
-      return "Hello From Bolt Server";
+    getTeamName: async (_, args, context, info) => {
+      console.log("======Checking If this runs========");
+      const UserAuth = Authenticate(context);
+      console.log("======Checking If this runs========2", UserAuth);
+      return await new Promise((resolve, reject) => {
+        pool.query(
+          "select teams.teamName from teammembers  inner join teams ON teams.id=teamId WHERE userId= ?",
+          [UserAuth.user_id],
+          (err, results, fields) => {
+            resolve(results[0].teamName);
+          }
+        );
+      });
     },
     Login: Login,
     AllUser: AllUser,
@@ -54,6 +68,9 @@ const resolvers = {
     getAllCountries: getAllCountries,
     AllTeams: AllTeams,
     getCustomerDetails: getCustomerDetails,
+    callingCustomer: async (_, { mobileNumber }, context, info) => {
+      Calling(mobileNumber);
+    },
   },
 
   Mutation: {
@@ -142,6 +159,8 @@ server.post("/upload", function (req, res) {
   var query = url_parts.query;
   var userId = query.userId;
   var docFlag = query.docFlag;
+  var tk = query.tk;
+  var UserAuth = Auth(tk);
   docFlag = docFlag != undefined ? parseInt(docFlag) : 1;
 
   console.log("upload api hitted!!", docFlag);
@@ -163,7 +182,7 @@ server.post("/upload", function (req, res) {
   //new documentPath
   let dirC;
   try {
-    dirC = docUploadPath(userId, docFlag);
+    dirC = docUploadPath(UserAuth.user_id, docFlag);
   } catch (err) {
     console.log("----Error----", err);
   }
@@ -188,37 +207,38 @@ server.post("/upload", function (req, res) {
       if (err) {
         return res.status(500).send("Error Encountered :" + err);
       } else {
+        res.status(200).send({ status: "success" });
         // new docUploadQuery
-        docUploadQuery(
-          parseInt(userId),
-          docFlag,
-          docFlag == 1 ? fileName : uploadPath
-        );
+        // docUploadQuery(
+        //   parseInt(userId),
+        //   docFlag,
+        //   docFlag == 1 ? fileName : uploadPath
+        // );
 
-        if (docFlag == 1) {
-          setTimeout(() => {
-            pool.query(
-              "select username,type,profilePic from users where id =?",
-              [parseInt(userId)],
-              (err, data, fields) => {
-                if (err) {
-                  res.status(500).send("Error Encountered :" + err);
-                } else {
-                  var token = jwt.sign(
-                    {
-                      username: data[0].username,
-                      userId: parseInt(userId),
-                      type: data[0].type,
-                      profilePic: data[0].profilePic,
-                    },
-                    process.env.SECRET_KEY
-                  );
-                  res.status(200).send({ status: "success", sxToken: token });
-                }
-              }
-            );
-          }, 200);
-        }
+        // if (docFlag == 1) {
+        //   setTimeout(() => {
+        //     pool.query(
+        //       "select username,type,profilePic from users where id =?",
+        //       [parseInt(userId)],
+        //       (err, data, fields) => {
+        //         if (err) {
+        //           res.status(500).send("Error Encountered :" + err);
+        //         } else {
+        //           var token = jwt.sign(
+        //             {
+        //               username: data[0].username,
+        //               userId: parseInt(userId),
+        //               type: data[0].type,
+        //               profilePic: data[0].profilePic,
+        //             },
+        //             process.env.SECRET_KEY
+        //           );
+        //           res.status(200).send({ status: "success", sxToken: token });
+        //         }
+        //       }
+        //     );
+        //   }, 200);
+        // }
         // res.send("Uploaded Successfully")
       }
       // res.redirect("http://localhost :3000/app/account");
