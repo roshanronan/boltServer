@@ -13,7 +13,7 @@ const Calling = (mobileNumber) => {
           "<Response><Say>Hello lets get it started yeah !</Say></Response>",
         // url: "https://mio.to/Ikkn",
         // to: "+918076302567",
-        to: "+91" + mobileNumber,
+        to: "+1" + mobileNumber,
         from: process.env.TWILIO_PHONE_NUMBER,
       },
       (err, call) => {

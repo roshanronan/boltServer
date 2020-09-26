@@ -14,6 +14,7 @@ const AllTeams = require("./Queries/OTHERS/AllTeams");
 const fileUpload = require("express-fileupload");
 const express = require("express");
 const url = require("url");
+const moment = require("moment");
 const path = require("path");
 const fs = require("fs-extra");
 var jwt = require("jsonwebtoken");
@@ -26,6 +27,102 @@ const Calling = require("./Queries/OTHERS/TwilioApis/Calling");
 const Auth = require("./Utils/Auth");
 // const Calling =require("./Queries/OTHERS/TwilioApis/Calling")
 // Calling()
+
+// const ftp = require("basic-ftp")
+
+// async function example() {
+//     const client = new ftp.Client()
+//     try {
+//         await client.connect("75.99.150.115", 21)
+//         await client.useTLS()
+//         await client.login("BoltP", "/v+NDMw=Z,7nT6mX")
+//         await client.useDefaultSettings()
+//         console.log(await client.list())
+//         await client.upload(fs.createReadStream("README.md"), "README.md")
+//     }
+//     catch(err) {
+//         console.log(err)
+//     }
+//     client.close()
+// }
+
+// example()
+
+// const ftp = require("basic-ftp");
+// const FTPS = require("easy-ftp/lib/sftps");
+
+// async function example() {
+//   const client = new FTPS();
+  
+//   // client.ftp.verbose = true;
+//   try {
+
+//     await client.access({
+//       host: "75.99.150.115",
+//       user: "BoltP",
+//       password: "/v+NDMw=Z,7nT6mX",
+//       secure: "implicit",
+//       // secureOptions : SSL_OP_ALL
+      
+//     });
+    
+//     await client.ensureDir("/Recordings")
+//     console.log(await client.list());
+
+//     client.trackProgress((info) => {
+//       console.log("File", info.name);
+//       console.log("Type", info.type);
+//       console.log("Transferred", info.bytes);
+//       console.log("Transferred Overall", info.bytesOverall);
+//     });
+
+//     // await client.uploadFrom(__dirname+"/TestWorkbook.xlsx", "/Recordings/TestWorkbook.xlsx")
+//     await client.uploadFromDir(__dirname + "/TestWorkbook.xlsx", [
+//       "/Recordings/TestWorkbook.xlsx",
+//     ]);
+//     // await client.downloadTo("README_COPY.md", "README_FTP.md")
+//   } catch (err) {
+//     console.log(err);
+//   }
+//   client.close();
+// }
+
+// example();
+
+// var FTPS = require('ftps');
+
+// var ftps = new FTPS({
+//   host: '75.99.150.115', // required
+//   username: 'BoltP', // Optional. Use empty username for anonymous access.
+//   password: '/v+NDMw=Z,7nT6mX', // Required if username is not empty, except when requiresPassword: false
+//   // protocol: 'ftps', // Optional, values : 'ftp', 'sftp', 'ftps', ... default: 'ftp'
+
+// });
+
+// ftps.put(__dirname+"/TestWorkbook.xlsx", "/Recordings/TestWorkbook.xlsx")
+
+// const Ftp = require("ftp");
+
+// const ftpClient = new Ftp();
+
+// ftpClient.on("ready", function () {
+//   ftpClient.put(
+//     __dirname+"/TestWorkbook.xlsx",
+//     "/Recordings/TestWorkbook.xlsx",
+//     function (err, list) {
+//       if (err) throw err;
+//       ftpClient.end();
+//     }
+//   );
+// });
+
+// ftpClient.connect({
+//   host: "75.99.150.115",
+//   user: "BoltP",
+//   password: "/v+NDMw=Z,7nT6mX",
+//   secure: true,
+//   protocol:"ftps"
+// });
 
 const docUploadPath = (userId, docFlag) => {
   console.log("---this called----");
@@ -150,6 +247,13 @@ server.use("/getProfile", (req, res) => {
       "/assets/userUploads/user_" + userId + "/profilepic/" + filename
     )
   );
+});
+
+server.use("/getReport", (req, res) => {
+  var rpDate = moment().subtract(1, "days").format("YYYY-MM-DD");
+  //16_9_2020.xlx
+  console.log("----", rpDate);
+  res.sendFile(path.join(__dirname, "../", "Report_" + rpDate + ".xlsx"));
 });
 
 server.post("/upload", function (req, res) {

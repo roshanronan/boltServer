@@ -10,7 +10,7 @@ const getCustomerDetails = async (_, { id }, ctx) => {
       "select firstName,lastName,mobileNumber,email from customerdetails where id= ?",
       [parseInt(id)],
       (err, results, fields) => {
-        console.log("------Data-----", results[0]);
+        // console.log("------Data-----", results[0]);
         resolve(results[0]);
       }
     );

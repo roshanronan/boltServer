@@ -55,15 +55,26 @@ if(teamName===undefined)
       }
     });
   });
+
+
+
+
+
+
+
+
 }
 else{
+  console.log("====shit happends===with teamName")
   return await new Promise((resolve,reject)=>{
+
+
 pool.query("select * from teams where teamName=?",[teamName],async(err,results,fields)=>{
 
   if(err)
   console.log("----Error---",err);
   else{
-  
+  console.log("-----------Check check---",results)
     pool.query(
       "SELECT COUNT(*) AS totalNoMembers FROM users u INNER JOIN teammembers tm ON tm.userId=u.id INNER JOIN teams ON tm.teamId=teams.id WHERE teams.teamName = ?",
       [teamName],
@@ -71,6 +82,7 @@ pool.query("select * from teams where teamName=?",[teamName],async(err,results,f
 
         
           results[0].totalNoMembers = data[0].totalNoMembers
+          console.log("----check again-----",results)
           resolve(results)
 
 

@@ -16,7 +16,7 @@ let destination = path.join(
 );
 
 const CustomerDetails = async (_, { data }, ctx) => {
-  console.log("==================data Parsed================", data);
+  // console.log("==================data Parsed================", data);
   const UserAuth = Authenticate(ctx);
 
   // return validationChecker(data);
@@ -61,18 +61,18 @@ const CustomerDetails = async (_, { data }, ctx) => {
         if (error) {
           reject(error.toString());
         } else {
-          console.log("-----see results -----", results.insertId);
-          // Messaging(data.mobileNumber, parseInt(results.insertId));
+          // console.log("-----see results -----", results.insertId);
+          Messaging(data.mobileNumber, parseInt(results.insertId));
 
           (async () => {
             await moveFile(
               source + UserAuth.user_id + "/" + data.filename,
               destination + results.insertId+"/"+data.filename
             );
-            console.log("The file has been moved");
+            // console.log("The file has been moved");
           })();
-
-          _;
+          
+          pool.query("update teams set sales = sales+1 where teamName=?",[data.formType],(err,res,fields)=>{})
           resolve("success");
         }
       }

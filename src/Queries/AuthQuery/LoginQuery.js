@@ -70,7 +70,7 @@ const passwordCheck = async (results, password) => {
       process.env.SECRET_KEY
     );
     token = token.toString();
-    res = { sxToken: token, status: "success", type: results[0].type };
+    res = { sxToken: token, status: "success", type: results[0].type ,teamName:results[0].teamName };
     console.log("ress", res);
   } else {
     res = { status: "Invalid Credentials!" };

@@ -45,6 +45,7 @@ type Token {
   type: String
   sxToken: String
   status: String
+  teamName: String
 }
 
 type userObject {
@@ -131,7 +132,7 @@ input CustomerDetailsObject {
   billingServiceCity: String
   billingServiceState: String
   billingZipcode: String
-  filename:String
+  filename: String
 }
 
 input AgentRegistrationObject {
